@@ -102,3 +102,49 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# pycharm
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# pycharm
+# Generated files
+.idea/**/contentModel.xml
+
+# pycharm
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# pycharm
+# CMake
+cmake-build-*/
+
+# pycharm
+# Mongo Explorer plugin
+.idea/**/mongoSettings.xml
+
+# pycharm
+# File-based project format
+*.iws
+
+# pycharm
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# pycharm
+# Editor-based Rest Client
+.idea/httpRequests
+
+# pycharm
+# Android studio 3.1+ serialized cache file
+.idea/caches/build_file_checksums.ser
