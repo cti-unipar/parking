@@ -1,5 +1,7 @@
 from http import HTTPStatus
-from flask import Flask, jsonify, request
+from flask import Flask, request
+from model import *
+
 app = Flask(__name__)
 
 
@@ -8,45 +10,45 @@ def hello():
     return "Hello World! UNIPARKING"
 
 
-types = [{'id': 1, 'nome': 'Funcionário'}, {'id': 2, 'nome': 'Professor'}]
-
-
-@app.route("/types")
+@app.route("/types", methods=["GET"])
 def list_types():
-    return jsonify(types)
+    return Types.objects().to_json()
 
 
-@app.route('/types/<int:type_id>')
+@app.route("/types/<string:type_id>", methods=['GET'])
 def get_type(type_id):
-    for current in types:
-        if current['id'] == type_id:
-            return jsonify(current)
-    return '', HTTPStatus.NOT_FOUND
+    try:
+        type = Types.objects.get(id=type_id)
+        return type.to_json()
+    except DoesNotExist:
+        return '', HTTPStatus.NOT_FOUND
 
 
 @app.route("/types", methods=['POST'])
 def create_type():
-    new_type = request.get_json()
-    new_type['id'] = len(types) + 1
-    types.append(new_type)
-    return jsonify(new_type), HTTPStatus.CREATED
+    data = request.get_json()
+    new_type = Types(**data)
+    new_type.save()
+    return new_type.to_json(), HTTPStatus.CREATED
 
 
-@app.route("/types/<int:type_id>", methods=['PUT'])
+@app.route("/types/<string:type_id>", methods=['PUT'])
 def update_type(type_id):
-    for i, current in enumerate(types):
-        if current['id'] == type_id:
-            updated_type = request.get_json()
-            updated_type['id'] = type_id
-            types[i] = updated_type
-            return '', HTTPStatus.NO_CONTENT
-    return '', HTTPStatus.NOT_FOUND
+    data = request.get_json()
+    try:
+        type = Types.objects.get(id=type_id)
+        type.update(**data)
+        return '', HTTPStatus.ACCEPTED
+    except DoesNotExist:
+        return '', HTTPStatus.NOT_FOUND
 
 
-@app.route("/types/<int:type_id>", methods=['DELETE'])
+@app.route("/types/<string:type_id>", methods=['DELETE'])
 def delete_type(type_id):
-    for current in types:
-        if current['id'] == type_id:
-            types.remove(current)
-            return "", HTTPStatus.NO_CONTENT
-    return "", HTTPStatus.NOT_FOUND
+    try:
+        type = Types.objects.get(id=type_id)
+        type.delete()
+        return "", HTTPStatus.NO_CONTENT
+    except DoesNotExist:
+        return "", HTTPStatus.NOT_FOUND
+
